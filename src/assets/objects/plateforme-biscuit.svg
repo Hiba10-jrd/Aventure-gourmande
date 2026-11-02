@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="170" height="28" viewBox="0 0 170 28">
+  <defs>
+    <linearGradient id="biscuit" x2="0" y2="1">
+      <stop stop-color="#f3cf96"/><stop offset="1" stop-color="#ce915d"/>
+    </linearGradient>
+    <linearGradient id="icing" x2="0" y2="1">
+      <stop stop-color="#fff0f4"/><stop offset="1" stop-color="#eea5c6"/>
+    </linearGradient>
+  </defs>
+  <rect x="1" y="3" width="168" height="24" rx="10" fill="url(#biscuit)" stroke="#aa704f" stroke-width="2"/>
+  <path d="M10 20h150" stroke="#f9dfb5" stroke-width="2" stroke-linecap="round"/>
+  <path d="M10 1h150a9 9 0 0 1 9 9v2q-6 6-12 0-6-4-11 2-5 6-10 0-6-5-12 0-6 5-12 0-6-5-12 0-6 5-12 0-6-5-12 0-6 5-12 0-6-5-12 0-6 5-12 0-6-5-12 0-6 5-12 0-6-4-13 0V10a9 9 0 0 1 9-9Z" fill="url(#icing)" stroke="#d588ad" stroke-width="1"/>
+  <path d="M13 4h144" stroke="#fff8f5" stroke-width="2" stroke-linecap="round"/>
+  <g stroke-width="3" stroke-linecap="round">
+    <path d="m24 7 4 2m53-2 4 1m54-1 4 2" stroke="#dc7da5"/>
+    <path d="m52 8 4-1m54 0 4 2" stroke="#86cbbd"/>
+  </g>
+  <g fill="#b67d52"><circle cx="24" cy="23" r="1"/><circle cx="64" cy="22" r="1"/><circle cx="108" cy="23" r="1"/><circle cx="145" cy="22" r="1"/></g>
+</svg>

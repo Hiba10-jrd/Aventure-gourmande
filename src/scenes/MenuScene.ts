@@ -1,11 +1,13 @@
 import Phaser from "phaser";
 
 export class MenuScene extends Phaser.Scene {
+  private instructions?: Phaser.GameObjects.Container;
   constructor() {
     super("MenuScene");
   }
 
   create(): void {
+    this.instructions = undefined;
     const { width, height } = this.scale;
 
     const background = this.add.graphics();
@@ -117,6 +119,7 @@ export class MenuScene extends Phaser.Scene {
   }
 
   private showInstructions(): void {
+    if (this.instructions?.active) return;
     const panel = this.add.container(
       this.scale.width / 2,
       this.scale.height / 2,
@@ -129,9 +132,9 @@ export class MenuScene extends Phaser.Scene {
       .text(
         0,
         0,
-        "COMMENT JOUER ?\n\n← → : Se déplacer\nESPACE : Sauter\nCollecte les bonbons !\n\nClique pour fermer",
+        "COMMENT JOUER ?\n\n← → : Se déplacer · ESPACE ou ↑ : Sauter\nTrouve les 9 étoiles, puis la sortie !\nÉCHAP : Pause · Les gelées font rebondir\n\nClique pour fermer",
         {
-          fontSize: "22px",
+          fontSize: "20px",
           color: "#fff1c7",
           align: "center",
           lineSpacing: 8,
@@ -139,7 +142,10 @@ export class MenuScene extends Phaser.Scene {
       )
       .setOrigin(0.5);
 
-    panel.add([background, instructions]);
+    const shade = this.add.rectangle(0, 0, this.scale.width, this.scale.height, 0x25143b, 0.6).setInteractive();
+    panel.add([shade, background, instructions]);
+    panel.setDepth(100);
+    this.instructions = panel;
     panel.setSize(540, 250);
     panel.setInteractive({ useHandCursor: true });
 
