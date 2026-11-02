@@ -2,13 +2,14 @@ import Phaser from 'phaser';
 import './style.css';
 import { MenuScene } from './scenes/MenuScene';
 import { Level1Scene } from './scenes/Level1Scene';
+import { Level2Scene } from './scenes/Level2Scene';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   width: 900,
   height: 650,
   parent: 'game',
-  scene: [MenuScene, Level1Scene],
+  scene: [MenuScene, Level1Scene, Level2Scene],
   physics: {
     default: 'arcade',
     arcade: {

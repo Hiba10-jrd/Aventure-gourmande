@@ -188,11 +188,8 @@ export class Level1Scene extends Phaser.Scene {
     this.registry.set('level1Complete',true);
     this.showPanel('Bravo, petite aventurière !','9 étoiles trouvées ! La forêt brille grâce à toi.',[
       ['Rejouer',()=>this.scene.restart()],
-      ['Niveau 2 · à venir',()=>{
-        this.overlay?.destroy();
-        this.showPanel('La suite se prépare…','Le niveau 2 n’est pas encore disponible.\nTa réussite est gardée pendant cette partie !',[
-          ['Rejouer la forêt',()=>this.scene.restart()],['Menu principal',()=>this.scene.start('MenuScene')]]);
-      }],['Menu principal',()=>this.scene.start('MenuScene')]]);
+      ['Niveau suivant',()=>this.scene.start('Level2Scene')],
+      ['Menu principal',()=>this.scene.start('MenuScene')]]);
     for(let i=0;i<12;i++)this.sparkles(Phaser.Math.Between(100,800),Phaser.Math.Between(140,450));
   }
 
