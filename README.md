@@ -6,14 +6,18 @@
 - npm run build : compilation TypeScript et production dans dist/
 - npm run preview : vérifier le build de production
 
-## Niveau 1
+## Commandes
 Flèches gauche/droite pour marcher, Espace ou Haut pour sauter.
+Échap ou Pause ouvre le panneau ; « Rejouer » recommence le niveau et « Menu
+principal » revient au menu.
+
+## Niveau 1
 Trouver les neuf étoiles puis rejoindre la porte à droite.
 Échap ou Pause ouvre le panneau : reprendre, recommencer, menu.
 Deux gelées provoquent seulement un petit rebond avec invulnérabilité temporaire.
 Aucune perte d’étoiles, de vie ou écran de défaite.
 Le saut tolère une commande légèrement anticipée et un départ du bord.
-La victoire permet de rejouer ou de consulter le panneau « Niveau 2 à venir ».
+La victoire permet de rejouer ou de passer au niveau 2.
 La réussite est conservée dans le registre Phaser pendant la session, sans sauvegarde disque.
 
 ## Organisation et illustrations
@@ -30,9 +34,9 @@ ils sont silencieux tant que le navigateur ne permet pas la lecture audio.
 Compilation TypeScript et build Vite réussis avec les versions installées :
 Phaser 4.2.1, TypeScript 7.0.2, Vite 8.3.5.
 Avertissement Vite non bloquant : bundle Phaser supérieur à 500 Ko.
-Le serveur local démarre correctement.
-Les outils navigateur et Computer Use sont indisponibles dans cette session :
-les interactions suivantes restent à confirmer dans un navigateur réel.
+Le niveau 3 a aussi été vérifié dans le navigateur : affichage des zones,
+déblocage depuis le menu, collecte, dégâts, checkpoints, trampoline, plateformes
+mobiles, puzzle, récompense, sortie et boutons de victoire/défaite.
 
 ### Parcours de recette manuelle
 1. Menu : ouvrir/fermer les instructions plusieurs fois, cliquer JOUER.
@@ -47,5 +51,8 @@ les interactions suivantes restent à confirmer dans un navigateur réel.
 10. Avec neuf étoiles, rejoindre la porte : victoire, rejouer, panneau niveau 2, menu.
 11. Répéter menu/niveau/rejouer pour vérifier les remises à zéro et l’absence d’écouteurs multiples.
 
-Le niveau 2 et les illustrations définitives restent de futurs travaux.
-
+## Niveau 3
+Après la victoire du niveau 2, le menu débloque « Niveau 3 — L’Île des Mangues
+Dorées ». Collecter dix étoiles, activer les deux checkpoints, résoudre le
+puzzle visuel des fruits et récupérer la Mangue Dorée pour ouvrir la sortie.
+Voir [docs/level3.md](docs/level3.md) pour le parcours et les tests.

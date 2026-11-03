@@ -317,9 +317,19 @@ export class Level2Scene extends Phaser.Scene {
     this.burst(this.player.x,this.player.y-60,0xffe49b);
     this.overlay=sweetPanel(this,'La Tablette de Chocolat Magique !',
       'Croustille : « Bravo ! Cette tablette servira au gâteau final. »\nElle est gardée pendant cette partie.',[
-        ['Retour au menu',()=>this.scene.start('MenuScene')],['Rejouer la rivière',()=>this.scene.restart()],
-      ],'river-tablet');
+        ['NIVEAU SUIVANT →',()=>this.startNextLevel()],
+        ['Retour au menu',()=>this.scene.start('MenuScene')],
+        ['Rejouer la rivière',()=>this.scene.restart()],
+      ],'river-tablet',0xe16e98);
     this.tweens.add({targets:this.tablet,angle:8,duration:500,yoyo:true,repeat:3});
+  }
+
+  private startNextLevel():void {
+    if(this.state!=='won'||this.registry.get('level2Complete')!==true
+      ||!this.scene.manager.keys['Level3Scene']) return;
+    this.overlay?.destroy();
+    this.overlay=undefined;
+    this.scene.start('Level3Scene');
   }
 
   private showHint(message:string):void {

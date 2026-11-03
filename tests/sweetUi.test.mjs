@@ -111,6 +111,25 @@ test('HUD pause and victory buttons use the same fixed-screen hit testing',()=>{
   pointer(panel,450,405);pointer(panel,450,475);assert.equal(menu,2);
 });
 
+test('three-button victory panel keeps the highlighted next-level action visible and clickable',()=>{
+  const {scene,pointer}=fixture(1900);const clicks=[];
+  const panel=ui.sweetPanel(scene,'Victoire','Bravo !',[
+    ['NIVEAU SUIVANT →',()=>clicks.push('next')],
+    ['Retour au menu',()=>clicks.push('menu')],
+    ['Rejouer la rivière',()=>clicks.push('replay')],
+  ],'river-tablet',0xe16e98);
+  const buttons=panel.list.filter(o=>o.listenerCount('pointerdown'));
+  assert.equal(buttons.length,3);
+  assert.deepEqual(buttons.map(button=>button.y),[365,425,485]);
+  assert.ok(buttons.every(button=>button.y-26>=105&&button.y+26<=545));
+  assert.ok(buttons[0].list[0].paints.includes(0xe16e98));
+  [365,425,485].forEach((y,i)=>{
+    assert.equal(pointer(panel,450,y),buttons[i]);
+  });
+  assert.deepEqual(clicks,['next','menu','replay']);
+  assert.equal(buttons.every(button=>button.input.enabled),true);
+});
+
 test('actual level 2 defeat callbacks stay interactive with physics and tweens paused, repeatedly',()=>{
   const courseSource=strip(read('src/world/chocolateCourse.ts')).replaceAll('export const','const');
   const course=new Function(courseSource+';return {CHECKPOINT_POINT,FERRY,PORTAL_POINT,RIVER_PHYSICS,RIVER_SOLIDS,RIVER_STARS,RIVER_SURFACE,RIVER_TOTAL,RIVER_WIDTH,START_POINT,TRUFFINOU_PATROLS};')();
@@ -129,6 +148,49 @@ test('actual level 2 defeat callbacks stay interactive with physics and tweens p
     overlay.destroy();pointer(overlay,450,325);assert.equal(overlay.active,false);
   }
   assert.equal(replay,5);assert.equal(menu,5);
+});
+
+test('level 2 victory starts the registered level 3 and preserves progression',()=>{
+  const courseSource=strip(read('src/world/chocolateCourse.ts')).replaceAll('export const','const');
+  const course=new Function(courseSource+';return {CHECKPOINT_POINT,FERRY,PORTAL_POINT,RIVER_PHYSICS,RIVER_SOLIDS,RIVER_STARS,RIVER_SURFACE,RIVER_TOTAL,RIVER_WIDTH,START_POINT,TRUFFINOU_PATROLS};')();
+  const code=read('src/scenes/Level2Scene.ts').replace(/^import[\s\S]*?;\s*/gm,'').replace('export class','class');
+  const deps={Phaser:{Scene:class{}},preloadChocolateAssets(){},drawChocolateBackdrop(){},...ui,...course};
+  const Scene=new Function(...Object.keys(deps),strip(code)+';return Level2Scene;')(...Object.values(deps));
+  const {scene,pointer}=fixture(),s=new Scene();Object.assign(s,scene);
+  const started=[];const values={};
+  s.physics={pause(){this.paused=true}};s.tweens={pauseAll(){this.paused=true},add(){}};
+  s.player=new (fixture().Object2D)();s.tablet=new (fixture().Object2D)();
+  s.burst=()=>{};
+  s.registry={set(key,value){values[key]=value},get(key){return values[key]}};
+  let restarts=0;
+  s.scene={manager:{keys:{Level3Scene:{scene:{key:'Level3Scene'}}}},start(key){started.push(key)},restart(){restarts++}};
+  s.win();
+  assert.equal(s.state,'won');assert.equal(s.physics.paused,true);
+  assert.equal(values.level2Complete,true);assert.equal(values.magicChocolateTablet,true);
+  assert.deepEqual(s.overlay.list.filter(o=>o.listenerCount('pointerdown')).map(o=>o.list[1].text),
+    ['NIVEAU SUIVANT →','Retour au menu','Rejouer la rivière']);
+
+  values.level2Complete=false;
+  pointer(s.overlay,450,365);
+  assert.deepEqual(started,[]);
+  values.level2Complete=true;
+  delete s.scene.manager.keys.Level3Scene;
+  pointer(s.overlay,450,365);
+  assert.deepEqual(started,[]);
+  s.scene.manager.keys.Level3Scene={scene:{key:'Level3Scene'}};
+  const completedPanel=s.overlay;
+  pointer(s.overlay,450,365);
+  assert.deepEqual(started,['Level3Scene']);
+  assert.equal(completedPanel.active,false);
+  assert.equal(s.overlay,undefined);
+  assert.equal(values.magicChocolateTablet,true);
+
+  s.win();
+  pointer(s.overlay,450,425);
+  assert.equal(started.at(-1),'MenuScene');
+  s.win();
+  pointer(s.overlay,450,485);
+  assert.equal(restarts,1);
 });
 
 test('level 1 modal buttons remain clickable with its non-scrolling camera',()=>{
