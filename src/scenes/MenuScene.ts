@@ -150,6 +150,11 @@ export class MenuScene extends Phaser.Scene {
       );
     }
 
+    if (this.registry.get("level4Complete") === true) {
+      this.createButton(buttonX, 570, "NIVEAU 5", 0xd38cad, () =>
+        this.scene.start("Level5Scene"),
+      );
+    }
     this.add
       .text(width * 0.39, height - 25, "Créé avec amour  ♥  Bon voyage !", {
         fontFamily: "Trebuchet MS, sans-serif",

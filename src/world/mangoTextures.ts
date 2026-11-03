@@ -1,10 +1,18 @@
 import Phaser from 'phaser';
 import heroUrl from '../assets/characters/heroine/new-heroine-transparent.png?url';
+import mangoEnemyUrl from '../assets/enemies/guerrier-mangue.png?url';
+import pineappleEnemyUrl from '../assets/enemies/gardien-ananas.png?url';
 import starUrl from '../assets/objects/etoile.svg?url&no-inline';
 import platformUrl from '../assets/objects/plateforme-biscuit.svg?url&no-inline';
 
 export function preloadMangoAssets(scene: Phaser.Scene): void {
   if (!scene.textures.exists('island-hero')) scene.load.image('island-hero', heroUrl);
+  if (!scene.textures.exists('enemy-mango-warrior')) {
+    scene.load.image('enemy-mango-warrior', mangoEnemyUrl);
+  }
+  if (!scene.textures.exists('enemy-pineapple-guardian')) {
+    scene.load.image('enemy-pineapple-guardian', pineappleEnemyUrl);
+  }
   if (!scene.textures.exists('island-star')) {
     scene.load.svg('island-star', starUrl, { width: 40, height: 40 });
   }

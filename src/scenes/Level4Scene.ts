@@ -423,7 +423,8 @@ export class Level4Scene extends Phaser.Scene {
     }
     this.overlay = sweetPanel(this, 'Bravo ! Tu as une mémoire magique !',
       'Bravo ! Tu as retrouvé tous les amis du royaume !\nVoici le Médaillon des Souvenirs. À suivre…',
-      [['Retour au menu', () => this.scene.start('MenuScene')],
+      [['NIVEAU SUIVANT →', () => this.scene.start('Level5Scene')],
+        ['Retour au menu', () => this.scene.start('MenuScene')],
         ['Rejouer le niveau', () => this.scene.restart()]], 'memory-medallion');
   }
 

@@ -153,11 +153,15 @@ export class Level3Scene extends Phaser.Scene {
 
   private createEnemies(groundById: Map<string, Surface>): void {
     ISLAND_ENEMIES.forEach(patrol => {
-      const key = patrol.kind === 'mango' ? 'mango-fruit' : 'pineapple-fruit';
+      const key = patrol.kind === 'mango' ? 'enemy-mango-warrior' : 'enemy-pineapple-guardian';
       const enemy = this.physics.add.sprite(patrol.x, 520, key).setDepth(4);
-      const scale = 52 / 68;
-      enemy.setOrigin(.5, .92).setScale(scale).setGravityY(ISLAND_PHYSICS.gravity);
-      enemy.body!.setSize(44 / scale, 48 / scale).setOffset((enemy.width - 44 / scale) / 2, 64 - 48 / scale);
+      const scale = 96 / enemy.height;
+      const hitboxWidth = 44;
+      const hitboxHeight = 60;
+      const footAnchor = patrol.kind === 'mango' ? 1240 / 1254 : 1174 / 1254;
+      enemy.setOrigin(.5, footAnchor).setScale(scale).setGravityY(ISLAND_PHYSICS.gravity);
+      enemy.body!.setSize(hitboxWidth / scale, hitboxHeight / scale)
+        .setOffset((enemy.width - hitboxWidth / scale) / 2, enemy.height * footAnchor - hitboxHeight / scale);
       enemy.setVelocityX(patrol.speed).setData('left', patrol.left).setData('right', patrol.right);
       const ground = groundById.get(patrol.support);
       if (!ground) throw new Error('Missing ground for ' + patrol.kind + ' patrol');
