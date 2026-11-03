@@ -56,3 +56,9 @@ Après la victoire du niveau 2, le menu débloque « Niveau 3 — L’Île des M
 Dorées ». Collecter dix étoiles, activer les deux checkpoints, résoudre le
 puzzle visuel des fruits et récupérer la Mangue Dorée pour ouvrir la sortie.
 Voir [docs/level3.md](docs/level3.md) pour le parcours et les tests.
+
+## Niveau 4
+Après la victoire du niveau 3, le menu débloque « Niveau 4 — Le Palais des
+Cartes Sucrées ». Retrouver dix paires identiques parmi vingt cartes après dix
+secondes d’observation ; trois erreurs maximum par manche. Voir
+[docs/level4.md](docs/level4.md).

@@ -94,7 +94,7 @@ test('scene and menu retain progression, hearts, replay, and post-game menu acti
   const scene = read('src/scenes/Level3Scene.ts');
   const menu = read('src/scenes/MenuScene.ts');
   const main = read('src/main.ts');
-  assert.match(main, /scene:\s*\[MenuScene,\s*Level1Scene,\s*Level2Scene,\s*Level3Scene\]/);
+  assert.match(main, /scene:\s*\[MenuScene,\s*Level1Scene,\s*Level2Scene,\s*Level3Scene,\s*Level4Scene\]/);
   assert.match(menu, /this\.registry\.get\("level2Complete"\)\s*===\s*true/);
   assert.match(menu, /this\.scene\.start\("Level3Scene"\)/);
   assert.match(scene, /this\.hearts\s*=\s*\[0,\s*1,\s*2\]/);

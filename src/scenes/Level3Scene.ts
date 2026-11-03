@@ -423,9 +423,18 @@ export class Level3Scene extends Phaser.Scene {
     this.burst(this.player.x, this.player.y - 60, 0xffd85c);
     this.overlay = sweetPanel(this, 'La Mangue Dorée !',
       'Tu as trouvé les étoiles et ouvert le temple. Bravo !', [
+        ['NIVEAU SUIVANT →', () => this.startNextLevel()],
         ['REJOUER', () => this.scene.restart()],
         ['Menu principal', () => this.scene.start('MenuScene')],
-      ], 'mango-fruit');
+      ], 'mango-fruit', 0xe16e98);
+  }
+
+  private startNextLevel(): void {
+    if (this.state !== 'won' || this.registry.get('level3Complete') !== true
+      || !this.scene.manager.keys['Level4Scene']) return;
+    this.overlay?.destroy();
+    this.overlay = undefined;
+    this.scene.start('Level4Scene');
   }
 
   private showHint(message: string): void {

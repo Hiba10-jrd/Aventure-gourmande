@@ -122,8 +122,11 @@ export class MenuScene extends Phaser.Scene {
 
     const riverUnlocked = this.registry.get("level1Complete") === true;
     const islandUnlocked = this.registry.get("level2Complete") === true;
+    const palaceUnlocked = this.registry.get("level3Complete") === true;
     const buttonX = width * 0.36;
-    const buttonYs = islandUnlocked ? [270, 340, 410, 480] : riverUnlocked ? [324, 414, 504] : [365, 465];
+    const buttonYs = palaceUnlocked ? [270, 330, 390, 450, 510]
+      : islandUnlocked ? [270, 350, 430, 510]
+        : riverUnlocked ? [324, 414, 504] : [365, 465];
     this.createButton(buttonX, buttonYs[0], "JOUER", 0xf4a64e, () =>
       this.scene.start("Level1Scene"),
     );
@@ -139,6 +142,11 @@ export class MenuScene extends Phaser.Scene {
     if (islandUnlocked) {
       this.createButton(buttonX, buttonYs[3], "NIVEAU 3", 0x56a977, () =>
         this.scene.start("Level3Scene"),
+      );
+    }
+    if (palaceUnlocked) {
+      this.createButton(buttonX, buttonYs[4], "NIVEAU 4", 0xa474bf, () =>
+        this.scene.start("Level4Scene"),
       );
     }
 

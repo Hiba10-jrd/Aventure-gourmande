@@ -14,7 +14,7 @@ const FOREST_ASSETS = [
   { key: 'sweet-platform', format: 'svg', url: platformUrl, width: 170, height: 28 },
   { key: 'sweet-ground', format: 'svg', url: groundUrl, width: 900, height: 50 },
   { key: 'sweet-star', format: 'svg', url: starUrl, width: 40, height: 40 },
-] as const;
+] as const;      
 
 
 export function preloadForestAssets(scene: Phaser.Scene): void {
