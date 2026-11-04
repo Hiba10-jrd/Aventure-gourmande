@@ -412,7 +412,7 @@ export class Level5Scene extends Phaser.Scene {
     this.registry.set('level5Complete', true);
     this.registry.set('magicFeather', true);
     this.overlay = sweetPanel(this, 'La Plume Magique !',
-      'Plumette : « Bravo ! Tu as libéré les vents et récupéré la Plume Magique. »\nÀ suivre : Le Village des Biscuits !', [
+      'Plumette : « Bravo ! Tu as libéré les vents et récupéré la Plume Magique. »\nÀ suivre : Le Village des Biscuits !', [['NIVEAU SUIVANT', () => this.scene.start('Level6Scene')],
         ['Retour au menu', () => this.scene.start('MenuScene')],
         ['Rejouer le niveau', () => this.scene.restart()],
       ], 'cloud-feather');

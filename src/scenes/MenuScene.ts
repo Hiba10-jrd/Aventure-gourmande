@@ -145,15 +145,31 @@ export class MenuScene extends Phaser.Scene {
       );
     }
     if (palaceUnlocked) {
-      this.createButton(buttonX, buttonYs[4], "NIVEAU 4", 0xa474bf, () =>
+      this.createButton(buttonX, this.registry.get("level5Complete") === true ? 485 : buttonYs[4], "NIVEAU 4", 0xa474bf, () =>
         this.scene.start("Level4Scene"),
       );
     }
 
     if (this.registry.get("level4Complete") === true) {
-      this.createButton(buttonX, 570, "NIVEAU 5", 0xd38cad, () =>
-        this.scene.start("Level5Scene"),
+      const nextUnlocked = this.registry.get("level5Complete") === true;
+
+      this.createButton(
+        nextUnlocked ? 190 : buttonX,
+        570,
+        "NIVEAU 5",
+        0xd38cad,
+        () => this.scene.start("Level5Scene")
       );
+
+      if (nextUnlocked) {
+        this.createButton(
+          520,
+          570,
+          "NIVEAU 6",
+          0xbb8159,
+          () => this.scene.start("Level6Scene")
+        );
+      }
     }
     this.add
       .text(width * 0.39, height - 25, "Créé avec amour  ♥  Bon voyage !", {
