@@ -14,16 +14,16 @@ test('three checkpoints and three villagers', () => {
 });
 test('level 6 uses dedicated PNG textures for its villagers, cookies, key and boss', () => {
   for (const texture of ['biscuit-villager', 'biscuit-enemy', 'biscuit-gold-key', 'biscuit-boss-final'])
-    assert.ok(scene.includes(`'${texture}'`), texture);
-  assert.match(scene,/setDisplaySize\(88, 88\).*setOrigin\(\.5, \.86\)/);
+    assert.match(scene,new RegExp(`["']${texture}["']`), texture);
+  assert.match(scene,/setDisplaySize\(88, 88\)\s*\.setOrigin\(0?\.5, 0?\.86\)/);
   assert.match(scene,/const size = isCookie \? 106 : 66/);
-  assert.match(scene,/setDisplaySize\(210, 210\).*setOrigin\(\.5, \.91\)/);
-  assert.match(scene,/setDisplaySize\(82,82\)/);
+  assert.match(scene,/setDisplaySize\(210, 210\)\s*\.setOrigin\(0?\.5, 0?\.91\)/);
+  assert.match(scene,/setDisplaySize\(82,\s*82\)/);
 });
 test('boss uses 3 hp, bridge requires 3 ingredients, victory saves registry', () => {
   assert.match(course,/hp: 3/);
   assert.match(scene,/this\.ingredients\.size === 3/);
-  assert.match(scene,/this\.registry\.set\('level6Complete', true\)/);
+  assert.match(scene,/this\.registry\.set\(["']level6Complete["'], true\)/);
 });
 test('pause, replay, game over and double jump are present', () => {
   for(const needle of ['pauseLevel()', 'resumeLevel()', 'this.scene.restart()', 'doubleJumpAvailable', 'bossInvulnerableUntil'])

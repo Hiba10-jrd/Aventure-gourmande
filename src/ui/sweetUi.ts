@@ -22,9 +22,19 @@ export function sweetButton(scene:Phaser.Scene,x:number,y:number,label:string,ac
   };
   paint(color);
   const text=sweetText(scene,0,0,label,width<110?17:20).setOrigin(.5).setColor('#ffffff');
-  // InputManager reads the child's own scroll factor, not its fixed-screen parent.
+  // The visual container owns the control, but a rendered rectangle owns its hitbox.
+  // Phaser does not bubble child pointer events to a Container automatically.
   const button=scene.add.container(x,y,[g,text]).setScrollFactor(0)
-    .setSize(width,52).setInteractive({useHandCursor:true});
+    .setSize(width,52);
+  const hit=scene.add.rectangle(0,0,width,52,0xffffff,.001).setScrollFactor(0)
+    .setInteractive({useHandCursor:true});
+  button.add(hit);
+  for(const name of ['pointerdown','pointerup','pointerover','pointerout']) {
+    hit.on(name,(pointer:Phaser.Input.Pointer,localX:number,localY:number,event?:Phaser.Types.Input.EventData)=>{
+      event?.stopPropagation();
+      button.emit(name,pointer,localX,localY,event);
+    });
+  }
   button.on('pointerover',()=>paint(0xa077bf));
   button.on('pointerout',()=>paint(color));
   button.on('pointerdown',action);
@@ -47,7 +57,10 @@ export function sweetPanel(scene:Phaser.Scene,title:string,detail:string,actions
   const compactLayout=Boolean(icon)&&actions.length>=3;
   const first=compactLayout?365:icon?405:325;
   const spacing=compactLayout?60:70;
+  // Added after the shade in the same hierarchy: rendered hit rectangles sort above it.
+  // Container destruction also destroys every button and its input listeners.
   actions.forEach(([label,action],i)=>panel.add(sweetButton(scene,450,first+i*spacing,label,action,330,
     i===0&&primaryColor!==undefined?primaryColor:0x8660a9)));
   return panel;
+
 }

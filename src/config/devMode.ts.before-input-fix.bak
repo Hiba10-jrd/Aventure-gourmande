@@ -1,0 +1,12 @@
+
+/**
+ * Mode développeur.
+ *
+ * true  = accès direct à tous les niveaux
+ * false = progression normale
+ *
+ * Fonctionne uniquement avec le serveur Vite
+ * de développement, jamais en production.
+ */
+export const DEV_MODE =
+  import.meta.env.DEV;

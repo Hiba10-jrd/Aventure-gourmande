@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { stripTypeScriptTypes } from 'node:module';
 import { test } from 'node:test';
+import { verifyMenuUnlock } from './menuFixture.mjs';
 
 const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 const courseSource = stripTypeScriptTypes(read('src/world/mangoCourse.ts')).replace(/\bexport\s+/g, '');
@@ -92,11 +93,7 @@ test('enemy patrols remain moderate and inside their safe ground areas', () => {
 
 test('scene and menu retain progression, hearts, replay, and post-game menu actions', () => {
   const scene = read('src/scenes/Level3Scene.ts');
-  const menu = read('src/scenes/MenuScene.ts');
-  const main = read('src/main.ts');
-  assert.match(main, /scene:\s*\[MenuScene,\s*Level1Scene,\s*Level2Scene,\s*Level3Scene,\s*Level4Scene\]/);
-  assert.match(menu, /this\.registry\.get\("level2Complete"\)\s*===\s*true/);
-  assert.match(menu, /this\.scene\.start\("Level3Scene"\)/);
+  verifyMenuUnlock(3);
   assert.match(scene, /this\.hearts\s*=\s*\[0,\s*1,\s*2\]/);
   assert.match(scene, /this\.immuneUntil\s*=\s*this\.clock\s*\+\s*1500/);
   assert.match(scene, /this\.registry\.set\('level3Complete',\s*true\)/);

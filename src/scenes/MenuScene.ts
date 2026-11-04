@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import heroineUrl from "../assets/characters/heroine/new-heroine-transparent.png?url";
-
+import { DEV_MODE } from '../config/devMode';
 export class MenuScene extends Phaser.Scene {
   private instructions?: Phaser.GameObjects.Container;
 
@@ -13,6 +13,15 @@ export class MenuScene extends Phaser.Scene {
   }
 
   create(): void {
+    if (DEV_MODE) {
+      const shortcuts = (event: KeyboardEvent) => {
+        const match = /^(?:Digit|Numpad)([1-7])$/.exec(event.code);
+        if (match && !event.repeat) this.startLevel(Number(match[1]));
+      };
+      this.input.keyboard?.on('keydown', shortcuts);
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.input.keyboard?.off('keydown', shortcuts));
+    }
+
     this.instructions = undefined;
     const { width, height } = this.scale;
 
@@ -120,57 +129,14 @@ export class MenuScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(5);
 
-    const riverUnlocked = this.registry.get("level1Complete") === true;
-    const islandUnlocked = this.registry.get("level2Complete") === true;
-    const palaceUnlocked = this.registry.get("level3Complete") === true;
     const buttonX = width * 0.36;
-    const buttonYs = palaceUnlocked ? [270, 330, 390, 450, 510]
-      : islandUnlocked ? [270, 350, 430, 510]
-        : riverUnlocked ? [324, 414, 504] : [365, 465];
-    this.createButton(buttonX, buttonYs[0], "JOUER", 0xf4a64e, () =>
+    this.createButton(buttonX, 330, "JOUER", 0xf4a64e, () =>
       this.scene.start("Level1Scene"),
     );
-    this.createButton(buttonX, buttonYs[1], "COMMENT JOUER", 0x8d579b, () =>
+    this.createButton(buttonX, 430, "LES NIVEAUX", 0x7299bf, () => this.showLevels());
+    this.createButton(buttonX, 530, "COMMENT JOUER", 0x8d579b, () =>
       this.showInstructions(),
     );
-
-    if (riverUnlocked) {
-      this.createButton(buttonX, buttonYs[2], "NIVEAU 2", 0xd66e91, () =>
-        this.scene.start("Level2Scene"),
-      );
-    }
-    if (islandUnlocked) {
-      this.createButton(buttonX, buttonYs[3], "NIVEAU 3", 0x56a977, () =>
-        this.scene.start("Level3Scene"),
-      );
-    }
-    if (palaceUnlocked) {
-      this.createButton(buttonX, this.registry.get("level5Complete") === true ? 485 : buttonYs[4], "NIVEAU 4", 0xa474bf, () =>
-        this.scene.start("Level4Scene"),
-      );
-    }
-
-    if (this.registry.get("level4Complete") === true) {
-      const nextUnlocked = this.registry.get("level5Complete") === true;
-
-      this.createButton(
-        nextUnlocked ? 190 : buttonX,
-        570,
-        "NIVEAU 5",
-        0xd38cad,
-        () => this.scene.start("Level5Scene")
-      );
-
-      if (nextUnlocked) {
-        this.createButton(
-          520,
-          570,
-          "NIVEAU 6",
-          0xbb8159,
-          () => this.scene.start("Level6Scene")
-        );
-      }
-    }
     this.add
       .text(width * 0.39, height - 25, "Créé avec amour  ♥  Bon voyage !", {
         fontFamily: "Trebuchet MS, sans-serif",
@@ -190,6 +156,51 @@ export class MenuScene extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setDepth(5);
+  }
+
+  private showLevels(): void {
+    if (this.instructions?.active) return;
+    const panel = this.add.container(0, 0).setDepth(100).setScrollFactor(0);
+    const shade = this.add.rectangle(450, 325, 900, 650, 0x302049, .98).setScrollFactor(0).setInteractive();
+    shade.on('pointerdown', (_pointer:Phaser.Input.Pointer,_x:number,_y:number,event:Phaser.Types.Input.EventData)=>event.stopPropagation());
+    panel.add(shade);
+    panel.add(this.add.text(450, 65, "CHOISIS TON AVENTURE", {
+      fontFamily: "Trebuchet MS", fontSize: "30px", color: "#fff1c7",
+    }).setOrigin(.5));
+    if (DEV_MODE) panel.add(this.add.text(450, 101, 'MODE DÉVELOPPEUR · Accès libre · Raccourcis 1–7', {
+      fontFamily: 'Trebuchet MS', fontSize: '15px', color: '#b9f5ef',
+    }).setOrigin(.5));
+    const labels = ["Bonbons", "Chocolat", "Île fruitée", "Palais", "Barbe à papa", "Biscuits", "Glaces enchantées"];
+    labels.forEach((label, i) => {
+      const unlocked = DEV_MODE || i === 0 || this.registry.get(`level${i}Complete`) === true;
+      const x = 230 + (i % 2) * 440, y = 155 + Math.floor(i / 2) * 100;
+      const tile = this.add.rectangle(x, y, 380, 76, unlocked ? 0x8660a9 : 0x51445f)
+        .setStrokeStyle(2, 0xeac4de).setScrollFactor(0);
+      if (unlocked) tile.setInteractive({ useHandCursor: true }).on('pointerdown',
+        (_pointer:Phaser.Input.Pointer,_x:number,_y:number,event:Phaser.Types.Input.EventData)=>{
+          event.stopPropagation(); this.startLevel(i + 1);
+        });
+      panel.add(tile);
+      panel.add(this.add.text(x, y, `NIVEAU ${i + 1} · ${label}${unlocked ? "" : " 🔒"}`, {
+        fontFamily: "Trebuchet MS", fontSize: "19px", color: unlocked ? "#fff1c7" : "#bcb3c8",
+      }).setOrigin(.5).setScrollFactor(0));
+    });
+    const back = this.add.text(450, 575, "← RETOUR", { fontSize: "24px", color: "#fff1c7" }).setOrigin(.5).setScrollFactor(0).setInteractive({ useHandCursor: true });
+    back.on("pointerdown", () => { panel.destroy(); this.instructions = undefined; });
+    panel.add(back); this.instructions = panel;
+  }
+
+  private startLevel(level: number): void {
+    const key = `Level${level}Scene`;
+    if (level < 1 || level > 7 || !this.scene.manager.keys[key]) return;
+    if (!DEV_MODE && level > 1 && this.registry.get(`level${level - 1}Complete`) !== true) return;
+    if (DEV_MODE) {
+      // Development access grants abilities needed by later levels, never completion flags.
+      this.registry.set('magicFeather', true);
+      this.registry.set('goldenBiscuitKey', true);
+    }
+    this.instructions?.destroy(); this.instructions = undefined;
+    this.scene.start(key);
   }
 
   private addCloud(x: number, y: number, scale: number): void {
@@ -300,11 +311,11 @@ export class MenuScene extends Phaser.Scene {
     const panel = this.add.container(
       this.scale.width / 2,
       this.scale.height / 2,
-    );
+    ).setScrollFactor(0);
 
     const shade = this.add
       .rectangle(0, 0, this.scale.width, this.scale.height, 0x25143b, 0.68)
-      .setInteractive();
+      .setScrollFactor(0).setInteractive();
     const background = this.add.graphics();
     background.fillStyle(0x39234e, 0.98).fillRoundedRect(-290, -145, 580, 290, 28);
     background.lineStyle(4, 0xffe9bd).strokeRoundedRect(-290, -145, 580, 290, 28);
@@ -330,9 +341,8 @@ export class MenuScene extends Phaser.Scene {
     panel.setDepth(100);
     this.instructions = panel;
     panel.setSize(this.scale.width, this.scale.height);
-    panel.setInteractive({ useHandCursor: true });
-
-    panel.once("pointerdown", () => {
+    shade.once("pointerdown", (_pointer:Phaser.Input.Pointer,_x:number,_y:number,event:Phaser.Types.Input.EventData) => {
+      event.stopPropagation();
       panel.destroy();
       this.instructions = undefined;
     });

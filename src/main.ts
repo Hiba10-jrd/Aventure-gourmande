@@ -7,13 +7,14 @@ import { Level3Scene } from './scenes/Level3Scene';
 import { Level4Scene } from './scenes/Level4Scene';
 import { Level5Scene } from './scenes/Level5Scene';
 import { Level6Scene } from './scenes/Level6Scene';
+import { Level7Scene } from './scenes/Level7Scene';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   width: 900,
   height: 650,
   parent: 'game',
-  scene: [MenuScene, Level1Scene, Level2Scene, Level3Scene, Level4Scene, Level5Scene, Level6Scene],
+  scene: [MenuScene, Level1Scene, Level2Scene, Level3Scene, Level4Scene, Level5Scene, Level6Scene, Level7Scene],
   physics: {
     default: 'arcade',
     arcade: {

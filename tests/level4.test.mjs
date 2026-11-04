@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { stripTypeScriptTypes } from 'node:module';
 import { test } from 'node:test';
+import { verifyMenuUnlock } from './menuFixture.mjs';
 
 const read = path => readFileSync(new URL('../' + path, import.meta.url), 'utf8');
 const source = stripTypeScriptTypes(read('src/world/memoryCards.ts')).replace(/\bexport\s+/g, '');
@@ -39,13 +40,9 @@ test('new rounds shuffle before the ten-second observation and keep the same cha
 
 test('level 4 implements the memory phases, error limit, pause and progression', () => {
   const scene = read('src/scenes/Level4Scene.ts');
-  const main = read('src/main.ts');
-  const menu = read('src/scenes/MenuScene.ts');
   const level3 = read('src/scenes/Level3Scene.ts');
-  assert.match(main, /scene:\s*\[MenuScene,\s*Level1Scene,\s*Level2Scene,\s*Level3Scene,\s*Level4Scene\]/);
+  verifyMenuUnlock(4);
   assert.match(scene, /super\('Level4Scene'\)/);
-  assert.match(menu, /this\.registry\.get\("level3Complete"\)\s*===\s*true/);
-  assert.match(menu, /this\.scene\.start\("Level4Scene"\)/);
   assert.match(level3, /this\.scene\.start\('Level4Scene'\)/);
   for (const state of ['INTRO', 'MEMORIZATION', 'FLIPPING', 'PLAYING', 'COMPARING',
     'GAME_OVER', 'VICTORY', 'PAUSED']) assert.ok(scene.includes("'" + state + "'"), state);

@@ -3,6 +3,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { createRequire, stripTypeScriptTypes } from 'node:module';
 import { test } from 'node:test';
+import { verifyMenuUnlock } from './menuFixture.mjs';
 
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const course=await import('data:text/javascript;base64,'+Buffer.from(stripTypeScriptTypes(read('src/world/chocolateCourse.ts'))).toString('base64'));
@@ -214,6 +215,6 @@ test('assets exist and use matching PNG/SVG loaders; level 1 remains the new-gam
   const loads=[];preload({textures:{exists:()=>false},load:{image:(k,u)=>loads.push(['png',k,u]),svg:(k,u)=>loads.push(['svg',k,u])}});
   assert.equal(loads.length,7);loads.forEach(([format,,url])=>assert.ok(url.split('?')[0].endsWith('.'+format)));
   assert.ok(read('src/scenes/MenuScene.ts').includes('this.scene.start("Level1Scene")'));
-  assert.match(read('src/scenes/MenuScene.ts'), /this\.registry\.get\(["']level1Complete["']\)\s*===\s*true/);
+  verifyMenuUnlock(2);
   assert.ok(read('src/scenes/Level1Scene.ts').includes("['Niveau suivant',()=>this.scene.start('Level2Scene')]"));
 });

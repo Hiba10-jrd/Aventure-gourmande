@@ -843,8 +843,9 @@ export class Level6Scene extends Phaser.Scene {
       this,
       "La Clé Biscuit Dorée !",
       "Zaynab a sauvé les habitants, reconstruit le pont et vaincu Croquefort !\n" +
-        "La clé ouvrira le château de Grignotou.",
+        "La Forêt des Glaces Enchantées t’attend !",
       [
+        ["NIVEAU SUIVANT", () => this.scene.start("Level7Scene")],
         ["Retour au menu", () => this.scene.start("MenuScene")],
         ["Rejouer le niveau", () => this.scene.restart()],
       ],

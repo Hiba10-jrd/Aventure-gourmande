@@ -1,0 +1,11 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="112" height="128" viewBox="0 0 112 128">
+<defs><linearGradient id="wing" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#b0e9ff" stop-opacity=".5"/></linearGradient><linearGradient id="dress" x2="1" y2="1"><stop stop-color="#e9dcff"/><stop offset="1" stop-color="#939be0"/></linearGradient></defs>
+<path d="M42 79C-6 70 6 18 29 39q20 21 13 40m26 0c48-9 36-61 13-40Q61 60 68 79M41 81C7 71 6 107 24 108l23-14m23-13c34-10 35 26 17 27L64 94" fill="url(#wing)" stroke="#9ecce8" stroke-width="1.5"/>
+<path d="m20 49 23 30M88 49 68 79" stroke="#c6eaff" stroke-width="2"/>
+<ellipse cx="56" cy="35" rx="28" ry="29" fill="#fff1c0" stroke="#dbc79d" stroke-width="2"/><path d="m26 113 30-60 29 60q-28 14-59 0" fill="url(#dress)" stroke="#9d9ed1" stroke-width="2"/>
+<path d="M39 70 25 87m49-16 15 8" stroke="#ffe8d1" stroke-width="8" stroke-linecap="round"/><path d="m87 79 17-35" stroke="#e0bb76" stroke-width="3"/><path d="m104 30 3 10 5 4-7 3-3 10-3-10-8-4 10-3Z" fill="#d5ffff" stroke="#8ccde9"/>
+<ellipse cx="56" cy="44" rx="24" ry="25" fill="#ffe9d5"/><path d="M31 35Q26 8 54 8q29-1 28 29L68 21q-16 15-37 14" fill="#fff6d2" stroke="#e4d1a7" stroke-width="1.5"/>
+<g fill="#fff"><ellipse cx="46" cy="43" rx="7" ry="9"/><ellipse cx="65" cy="43" rx="7" ry="9"/></g><g fill="#586798"><ellipse cx="47" cy="44" rx="3" ry="6"/><ellipse cx="64" cy="44" rx="3" ry="6"/></g><g fill="#fff"><circle cx="46" cy="42" r="1.5"/><circle cx="63" cy="42" r="1.5"/></g>
+<path d="M49 58q7 6 13-1" fill="none" stroke="#bc759c" stroke-width="2" stroke-linecap="round"/><g fill="#f4adc5" opacity=".6"><ellipse cx="37" cy="55" rx="5" ry="3"/><ellipse cx="75" cy="55" rx="5" ry="3"/></g>
+<path d="m37 13 2-12 10 9 8-9 7 10 10-8-1 12Z" fill="#addff5" stroke="#85b9d7"/><circle cx="56" cy="10" r="3" fill="#fff"/><path d="m37 108 6-8 7 8 7-8 7 8 9-8 6 8" fill="none" stroke="#e7faff" stroke-width="2"/><ellipse cx="46" cy="121" rx="9" ry="4" fill="#88b8d8"/><ellipse cx="67" cy="121" rx="9" ry="4" fill="#88b8d8"/>
+</svg>
